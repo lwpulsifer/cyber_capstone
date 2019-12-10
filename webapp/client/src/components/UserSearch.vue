@@ -1,5 +1,9 @@
 <template>
   <b-container>
+    <div>
+      <h1> Find out what data of yours are floating around on the internet
+      </h1>
+    </div><br>
     <div class="container">
       <!-- <b-button v-b-modal.searchmodal> Search </b-button> -->
         <b-form @submit="onSubmit" @reset="onReset" class="w-100">
@@ -12,23 +16,18 @@
                           required
                           placeholder="Enter first name">
             </b-form-input>
-          </b-form-group>
-          <b-form-group id="form-name-group"
+        </b-form-group>
+        <b-form-group id="form-name-group"
                         label="Last name:"
                         label-for="form-name-input">
-              <b-form-input id="form-last-name-input"
+          <b-form-input id="form-last-name-input"
                             type="text"
                             v-model="searchForm.last_name"
                             required
                             placeholder="Enter last name">
-              </b-form-input>
-            </b-form-group>
-          <b-form-group id="form-read-group">
-            <b-form-checkbox-group v-model="searchForm.alive" id="form-checks">
-              <b-form-checkbox value="true">Alive?</b-form-checkbox>
-            </b-form-checkbox-group>
-          </b-form-group>
-          <b-button type="submit" variant="primary">Submit</b-button>
+          </b-form-input>
+        </b-form-group>
+          <b-button type="submit" variant="primary">Go</b-button>
           <b-button type="reset" variant="danger" @reset="onReset">Reset</b-button>
         </b-form>
       </div>
