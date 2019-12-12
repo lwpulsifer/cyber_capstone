@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import UserSearch from './components/UserSearch.vue';
+import SearchResults from './components/SearchResults.vue';
 
 Vue.use(Router);
 
@@ -17,6 +18,11 @@ export default new Router({
       path: '/usersearch',
       name: 'User Search',
       component: UserSearch,
+    },
+    {
+      path: '/searchresults',
+      name: 'SearchResults',
+      component: SearchResults,
     },
   ],
 });

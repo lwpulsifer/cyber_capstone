@@ -45,7 +45,6 @@ export default {
       searchForm: {
         first_name: '',
         last_name: '',
-        alive: [],
       },
     };
   },
@@ -53,24 +52,22 @@ export default {
     initForm() {
       this.searchForm.first_name = '';
       this.searchForm.last_name = '';
-      this.searchForm.alive = [];
     },
     onSubmit(evt) {
       evt.preventDefault();
       const payload = {
         first_name: this.searchForm.first_name,
         last_name: this.searchForm.last_name,
-        alive: this.searchForm.alive, // property shorthand
       };
       this.sendSearch(payload);
-      this.initForm();
     },
     sendSearch(payload) {
       const path = 'http://localhost:5000/search';
       axios.post(path, payload)
         .then((response) => {
           // eslint-disable-next-line
-          console.log(response.data);
+          console.log(response.data.search_result);
+          this.$router.push({ name: 'SearchResults' });
         })
         .catch((error) => {
           // eslint-disable-next-line
