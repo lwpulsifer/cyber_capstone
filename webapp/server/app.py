@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from voter_data_search import VoterDataSearch
 
 
@@ -38,7 +38,8 @@ def send_search():
         search_data = request.get_json()
         first_name = search_data.get('first_name')
         last_name = search_data.get('last_name')
-        success, voter_data = search.search(first_name=first_name, last_name=last_name)
+        middle_initial = search_data.get('middle_initial')
+        success, voter_data = search.search(first_name=first_name, last_name=last_name, mi=middle_initial)
         response_object['search_result'] = voter_data
         response_object['status'] = statuses[success]
         RESULTS.append(voter_data)
@@ -46,9 +47,10 @@ def send_search():
         response_object['message'] = 'Nothing to get'
     return jsonify(response_object)
 
+@cross_origin(supports_credentials=True)
 @app.route('/results', methods=['GET'])
 def get_results():
-    res = [{'attr': key, 'val': val} if val else None for key, val in RESULTS[-1].items()]
+    res = [{'Attribute': key, 'Value': val} if val else None for key, val in RESULTS[-1].items()]
     res = [x for x in res if x]
     return jsonify(res)
 
