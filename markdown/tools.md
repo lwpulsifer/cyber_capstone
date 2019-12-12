@@ -1,2 +1,0 @@
-## Tool —  auto-Google yourself
-
