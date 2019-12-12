@@ -3,7 +3,7 @@ import csv
 
 class VoterDataSearch():
 
-    def __init__(self, prefix='server/data', postfix="-voter-data.tsv"):
+    def __init__(self, prefix='data', postfix="-voter-data.tsv"):
         self.prefix = prefix
         self.postfix = postfix
     

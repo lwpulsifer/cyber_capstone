@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from voter_data_search import VoterDataSearch
+from tweet_search import TweetSearch
 
 
 # configuration
@@ -11,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 # enable CORS
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app)
 
 RESULTS = [
     {
@@ -19,13 +20,16 @@ RESULTS = [
     'last_name': 'Hi there!',
     },
 ]
-
+TWEETS = [
+    1, 2, 3, 4,
+]
 
 # sanity check route
 @app.route('/ping', methods=['GET'])
 def ping_pong():
     return jsonify('pong!')
 
+@cross_origin(supports_credentials=True)
 @app.route('/search', methods=['GET', 'POST'])
 def send_search():
     response_object = {'status': 'success'}
@@ -36,6 +40,10 @@ def send_search():
     if request.method == 'POST':
         search = VoterDataSearch()
         search_data = request.get_json()
+        print(search_data.get('handle'))
+        tw_search = TweetSearch(user=search_data.get('handle'), count=20)
+
+        response_object['tweets'] = tw_search.get_ids()
         first_name = search_data.get('first_name')
         last_name = search_data.get('last_name')
         middle_initial = search_data.get('middle_initial')
@@ -43,6 +51,7 @@ def send_search():
         response_object['search_result'] = voter_data
         response_object['status'] = statuses[success]
         RESULTS.append(voter_data)
+        TWEETS.append(tw_search.get_ids())
     else:
         response_object['message'] = 'Nothing to get'
     return jsonify(response_object)
@@ -53,6 +62,10 @@ def get_results():
     res = [{'Attribute': key, 'Value': val} if val else None for key, val in RESULTS[-1].items()]
     res = [x for x in res if x]
     return jsonify(res)
+
+@app.route('/tweets', methods=['GET'])
+def get_tweets():
+    return jsonify(TWEETS[-1])
 
 
 if __name__ == '__main__':
