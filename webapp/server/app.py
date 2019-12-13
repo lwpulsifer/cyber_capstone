@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from voter_data_search import VoterDataSearch
 from tweet_search import TweetSearch
-
+from tweet_auth import TweetAuth
 
 # configuration
 DEBUG = True
@@ -21,7 +21,11 @@ RESULTS = [
     },
 ]
 TWEETS = [
-    1, 2, 3, 4,
+    {
+    'text': 'No Tweets',
+    'created_at': 'None',
+    'favorites': 0,
+    }
 ]
 
 # sanity check route
@@ -40,10 +44,7 @@ def send_search():
     if request.method == 'POST':
         search = VoterDataSearch()
         search_data = request.get_json()
-        print(search_data.get('handle'))
-        tw_search = TweetSearch(user=search_data.get('handle'), count=20)
-
-        response_object['tweets'] = tw_search.get_ids()
+        tw_search = TweetSearch(user=search_data.get('handle'), count=search_data.get('tweet_num'))
         first_name = search_data.get('first_name')
         last_name = search_data.get('last_name')
         middle_initial = search_data.get('middle_initial')
@@ -66,6 +67,12 @@ def get_results():
 @app.route('/tweets', methods=['GET'])
 def get_tweets():
     return jsonify(TWEETS[-1])
+
+@app.route('/tweet_auth', methods=['GET'])
+def tweet_auth():
+    tweet_texts = [t['text'] for t in TWEETS[-1]]
+    ta = TweetAuth(tweet_texts)
+    return jsonify(ta.gen_auth_questions())
 
 
 if __name__ == '__main__':

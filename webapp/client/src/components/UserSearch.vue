@@ -35,6 +35,13 @@
                               v-model="searchForm.handle"
                               placeholder="Enter twitter handle (optional)">
           </b-form-input>
+          <b-button variant="primary"> # Tweets: {{ searchForm.tweet_num }}</b-button>
+          <b-form-input id="form-handle-input"
+                              type="range"
+                              v-model="searchForm.tweet_num"
+                              min="0"
+                              max="100">
+          </b-form-input>
         </b-input-group>
         <br>
           <b-button type="submit" variant="primary">Go</b-button>
@@ -95,6 +102,7 @@ export default {
         last_name: '',
         middle_initial: '',
         handle: '',
+        tweet_num: '50',
       },
       first_name: '',
       last_name: '',
@@ -109,6 +117,7 @@ export default {
       this.searchForm.last_name = '';
       this.searchForm.middle_initial = '';
       this.handle = '';
+      this.tweet_num = '50';
     },
     onSubmit(evt) {
       evt.preventDefault();
@@ -117,6 +126,7 @@ export default {
         last_name: this.searchForm.last_name,
         middle_initial: this.searchForm.middle_initial,
         handle: this.searchForm.handle,
+        tweet_num: this.searchForm.tweet_num,
       };
       this.first_name = this.searchForm.first_name;
       this.last_name = this.searchForm.last_name;
