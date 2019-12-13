@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container fluid>
   <b-container v-if="show_search">
     <div>
       <h1> Find out what data of yours are floating around on the internet
@@ -36,7 +36,7 @@
                               placeholder="Enter twitter handle (optional)">
           </b-form-input>
           <b-button variant="primary"> # Tweets: {{ searchForm.tweet_num }}</b-button>
-          <b-form-input id="form-handle-input"
+          <b-form-input id="form-num_tweets-input"
                               type="range"
                               v-model="searchForm.tweet_num"
                               min="0"
@@ -52,7 +52,7 @@
     <b-row>
       <b-col>
         <h1>Voter Data for</h1>
-        <h2 color='red'>{{ first_name }} {{ last_name }}</h2>
+        <h2>{{ first_name }} {{ last_name }}</h2>
       </b-col>
       <b-col>
         <h1> Twitter Activity </h1>
@@ -66,18 +66,27 @@
           :items='voter_data'></b-table>
       </b-col>
     <br>
-    <b-col>
-      <!-- <b-card v-for="tweet in tweets" :key="tweet">
-        {{ tweet }}
-      </b-card> -->
+    <b-col v-if="auth_count >= auth_threshold">
       <b-table class='tables'
           sticky-header='400px'
           bordered striped hover
           :items='tweets'></b-table>
     </b-col>
+    <b-col v-else>
+    <b-table-simple sticky-header='400px'>
+      <b-th> Authentication Questions: Which one of these is your Tweet? </b-th>
+      <b-tr>
+        <question :possibles="question"
+        :c="correct"
+        @answer-clicked="answerClicked">
+        </question>
+      </b-tr>
+    </b-table-simple>
+    </b-col>
     </b-row>
     <div class="back-to-search">
       <b-button v-on:click="toggleSearch"> Return to Search </b-button>
+      <b-button v-on:click="incAuth"> inc Auth </b-button>
     </div>
   </b-container>
   </b-container>
@@ -85,15 +94,15 @@
 
 <script>
 import axios from 'axios';
-// import { Tweet } from 'vue-tweet-embed';
+import question from './question.vue';
 
 const NProgress = require('nprogress');
 
 export default {
   name: 'UserSearch',
-  // components: {
-  //   Tweet,
-  // },
+  components: {
+    question,
+  },
   data() {
     return {
       msg: 'Stuff!',
@@ -109,6 +118,10 @@ export default {
       show_search: true,
       voter_data: [],
       tweets: [],
+      question: [],
+      correct: '',
+      auth_count: 0,
+      auth_threshold: 2,
     };
   },
   methods: {
@@ -136,17 +149,28 @@ export default {
       const path = 'http://localhost:5000/search';
       NProgress.start();
       axios.post(path, payload)
-        .then((response) => {
-          // eslint-disable-next-line
-          console.log(response.data.search_result);
+        .then(() => {
           NProgress.done();
-          this.show_search = false;
           this.getMessage();
           this.getTweets();
+          this.authenticateTweets();
+          this.show_search = false;
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.log(error);
+        });
+    },
+    authenticateTweets() {
+      const path = 'http://localhost:5000/tweet_auth';
+      axios.get(path)
+        .then((res) => {
+          this.question = res.data[0].possibles;
+          this.correct = res.data[0].correct;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
         });
     },
     getMessage() {
@@ -165,8 +189,6 @@ export default {
       axios.get(path)
         .then((res) => {
           this.tweets = res.data;
-          // eslint-disable-next-line
-          console.log(this.tweets)
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -174,7 +196,18 @@ export default {
         });
     },
     toggleSearch() {
-      this.show_search = true;
+      this.show_search = !this.show_search;
+    },
+    incAuth() {
+      this.auth_count += 1;
+    },
+    answerClicked(e) {
+      // eslint-disable-next-line
+      console.log(e);
+      if (e === 'correct') {
+        this.incAuth();
+      }
+      this.authenticateTweets();
     },
   },
   // created() {

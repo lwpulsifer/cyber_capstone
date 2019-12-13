@@ -10,18 +10,23 @@ class TweetAuth():
         questions = []
         rt = RandomTweet()
         for tweet in self.tweets:
-            possibles = [[rt.random_tweet() for _ in range(3)] + [tweet]]
+            possibles = [rt.random_tweet() for _ in range(3)] + [tweet]
             random.shuffle(possibles)
             new_question = {
                 'question': "Which one of these is one of your tweets?",
                 'tag': 'tweet',
-                'possibles': possibles,
+                'possibles': [{"_": ["A", "B", "C", "D"][i], \
+                                'Question': possibles[i]} for i in range(4)],
                 'correct': tweet,
             }
             questions.append(new_question)
         return questions
+    
+    def auth(self, num_correct=2, num_wrong=2):
+        questions = self.gen_auth_questions()
+        
 
 if __name__ == '__main__':
     auth = TweetAuth(["If I weren't so beautiful, I'd probably be a bouncer"])
-    print(auth.gen_auth_questions())
+    
         

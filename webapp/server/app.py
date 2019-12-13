@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 from voter_data_search import VoterDataSearch
 from tweet_search import TweetSearch
 from tweet_auth import TweetAuth
+import random
 
 # configuration
 DEBUG = True
@@ -20,13 +21,13 @@ RESULTS = [
     'last_name': 'Hi there!',
     },
 ]
-TWEETS = [
+TWEETS = [[
     {
     'text': 'No Tweets',
     'created_at': 'None',
     'favorites': 0,
     }
-]
+]]
 
 # sanity check route
 @app.route('/ping', methods=['GET'])
@@ -72,7 +73,8 @@ def get_tweets():
 def tweet_auth():
     tweet_texts = [t['text'] for t in TWEETS[-1]]
     ta = TweetAuth(tweet_texts)
-    return jsonify(ta.gen_auth_questions())
+    auth_questions = ta.gen_auth_questions()
+    return jsonify([random.choice(auth_questions)])
 
 
 if __name__ == '__main__':
