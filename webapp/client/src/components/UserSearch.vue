@@ -55,7 +55,8 @@
         <h2>{{ first_name }} {{ last_name }}</h2>
       </b-col>
       <b-col>
-        <h1> Twitter Activity </h1>
+        <h1> Twitter Activity for</h1>
+        <h2> User @{{ user }} </h2>
       </b-col>
     </b-row>
     <b-row>
@@ -72,21 +73,35 @@
           bordered striped hover
           :items='tweets'></b-table>
     </b-col>
-    <b-col v-else>
+    <b-col v-else-if="auth_count <= auth_low_threshold">
+      <b-table class='tables'
+          sticky-header='400px'
+          bordered striped hover
+          :items='dummy_tweets'></b-table>
+    </b-col>
+    <b-col v-else-if="!invalid_user">
     <b-table-simple sticky-header='400px'>
-      <b-th> Authentication Questions: Which one of these is your Tweet? </b-th>
+      <b-th style="color: red;"> Authentication Questions: Which one of these is your Tweet? </b-th>
       <b-tr>
-        <question :possibles="question"
+        <question v-if="!show_dummy"
+        :possibles="question"
+        :c="correct"
+        @answer-clicked="answerClicked">
+        </question>
+        <question v-else
+        :possibles="dummy_question"
         :c="correct"
         @answer-clicked="answerClicked">
         </question>
       </b-tr>
     </b-table-simple>
     </b-col>
+    <b-col v-else>
+      <h2> Invalid Twitter user "@{{ user }}" specified </h2>
+    </b-col>
     </b-row>
     <div class="back-to-search">
       <b-button v-on:click="toggleSearch"> Return to Search </b-button>
-      <b-button v-on:click="incAuth"> inc Auth </b-button>
     </div>
   </b-container>
   </b-container>
@@ -122,6 +137,16 @@ export default {
       correct: '',
       auth_count: 0,
       auth_threshold: 2,
+      auth_low_threshold: -10,
+      questions: [],
+      question_dex: 0,
+      invalid_user: false,
+      user: '',
+      dummy_tweets: [],
+      dummy_question: [],
+      dummy_questions: [],
+      valid_percentage: 1.00,
+      show_dummy: false,
     };
   },
   methods: {
@@ -143,6 +168,7 @@ export default {
       };
       this.first_name = this.searchForm.first_name;
       this.last_name = this.searchForm.last_name;
+      this.user = this.searchForm.handle;
       this.sendSearch(payload);
     },
     sendSearch(payload) {
@@ -154,6 +180,7 @@ export default {
           this.getMessage();
           this.getTweets();
           this.authenticateTweets();
+          this.getDummyTweets();
           this.show_search = false;
         })
         .catch((error) => {
@@ -165,8 +192,15 @@ export default {
       const path = 'http://localhost:5000/tweet_auth';
       axios.get(path)
         .then((res) => {
-          this.question = res.data[0].possibles;
-          this.correct = res.data[0].correct;
+          if (res.data.error === 'true') {
+            this.invalid_user = true;
+          } else {
+            this.questions = res.data.questions;
+            this.dummy_questions = res.data.dummy_questions;
+            this.question = this.questions[this.question_dex].possibles;
+            this.correct = this.questions[this.question_dex].correct;
+            this.dummy_question = this.dummy_questions[this.question_dex].possibles;
+          }
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -195,19 +229,57 @@ export default {
           console.error(error)
         });
     },
+    getDummyTweets() {
+      const path = 'http://localhost:5000/dummy_tweets';
+      axios.get(path)
+        .then((res) => {
+          this.dummy_tweets = res.data;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error)
+        });
+    },
     toggleSearch() {
       this.show_search = !this.show_search;
     },
     incAuth() {
       this.auth_count += 1;
     },
+    decAuth() {
+      this.auth_count -= 1;
+    },
     answerClicked(e) {
       // eslint-disable-next-line
       console.log(e);
       if (e === 'correct') {
         this.incAuth();
+        this.valid_percentage = 1.00;
+      } else {
+        this.decAuth();
+        this.valid_percentage = this.valid_percentage * 0.7;
       }
-      this.authenticateTweets();
+      this.question_dex += 1;
+      if (this.question_dex >= this.questions.length) {
+        this.question_dex = 0;
+      }
+      this.question = this.questions[this.question_dex].possibles;
+      this.correct = this.questions[this.question_dex].correct;
+      this.dummy_question = this.dummy_questions[this.question_dex].possibles;
+      const rand = Math.random();
+      if (rand > this.valid_percentage) {
+        // eslint-disable-next-line
+        console.log(this.valid_percentage)
+        // eslint-disable-next-line
+        console.log(rand)
+        this.show_dummy = true;
+      } else {
+        // eslint-disable-next-line
+        console.log(this.valid_percentage)
+        // eslint-disable-next-line
+        console.log(rand)
+        this.show_dummy = false;
+      }
     },
   },
   // created() {

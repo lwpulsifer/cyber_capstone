@@ -7,7 +7,7 @@ class TweetSearch():
         self.api = api
         self.user = user
         self.count = count
-        self.error = [{"ERROR": f"Twitter user <{self.user}\> is invalid. Try again."}]
+        self.error = [{"text": f"Twitter user <{self.user}> is invalid. Try again."}]
     
     def get_tweets(self, api=None, screen_name=None, count=None):
         if not api: api = self.api
@@ -28,9 +28,11 @@ class TweetSearch():
         if self.get_tweets():
             for tweet in self.get_tweets():
                 ids.append({"text": tweet.text, "created at": tweet.created_at, "favorites": tweet.favorite_count})
+            success = True
         else:
             ids = self.error
-        return ids
+            success = False
+        return success, ids
 
 if __name__ == '__main__':
     tw = TweetSearch(user='adityapmathur')
