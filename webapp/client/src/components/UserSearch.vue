@@ -242,6 +242,7 @@ export default {
     },
     toggleSearch() {
       this.show_search = !this.show_search;
+      this.initForm();
     },
     incAuth() {
       this.auth_count += 1;
