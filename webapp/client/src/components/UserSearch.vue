@@ -68,7 +68,7 @@
       </b-col>
     <br>
     <b-col v-if="auth_count >= auth_threshold">
-      <b-table class='tables'
+      <b-table fixed class='tables'
           sticky-header='400px'
           bordered striped hover
           :items='tweets'></b-table>
@@ -80,7 +80,7 @@
           :items='dummy_tweets'></b-table>
     </b-col>
     <b-col v-else-if="!invalid_user">
-    <b-table-simple sticky-header='400px'>
+    <b-table-simple fixed sticky-header='400px'>
       <b-th style="color: red;"> Authentication Questions: Which one of these is your Tweet? </b-th>
       <b-tr>
         <question v-if="!show_dummy"
@@ -95,6 +95,8 @@
         </question>
       </b-tr>
     </b-table-simple>
+    <div> Auth-count: {{  auth_count }}, High: {{ auth_threshold }},
+    Low: {{ auth_low_threshold }}, Percent chance: {{ valid_percentage }} </div>
     </b-col>
     <b-col v-else>
       <h2> Invalid Twitter user "@{{ user }}" specified </h2>
@@ -154,8 +156,8 @@ export default {
       this.searchForm.first_name = '';
       this.searchForm.last_name = '';
       this.searchForm.middle_initial = '';
-      this.handle = '';
-      this.tweet_num = '50';
+      this.searchForm.handle = '';
+      this.searchForm.tweet_num = '50';
     },
     onSubmit(evt) {
       evt.preventDefault();
@@ -241,8 +243,10 @@ export default {
         });
     },
     toggleSearch() {
-      this.show_search = !this.show_search;
+      this.show_search = true;
       this.initForm();
+      this.auth_count = 0;
+      this.valid_percentage = 100;
     },
     incAuth() {
       this.auth_count += 1;

@@ -19,6 +19,6 @@ A --> F[Publicly Available Data]
   
 ```
 
-![](https://photos.google.com/photo/AF1QipP6S2575-KVXeaq448Hx18S22It9zmzmTH0i7I) 
+![](C:\Users\lwpul\Projects\cyber_capstone\markdown\photos\mockup.JPG) 
 
 This is definitely a tool that I would use to scope out my own digital footprint, and I think it could be a valuable way to manage things like social media settings if social media companies provide APIs to enable this kind of programmatic privacy management. As we move farther and farther into the world of big data and all-encompassing social media, it will be by using the same data tools that so far have compromised our privacy that we will be able to protect ourselves from corporations whose default will always be to collect as much data as possible. Clive Humby said in 2006 that "data is the new oil," but in recent years it's starting to seem like he was making an understatement. The difference between the two, though, is that once oil is used, it's gone. Data, on the other hand, can be repurposed, repackaged, and reused, hopefully to the betterment of the people who generate it. 
