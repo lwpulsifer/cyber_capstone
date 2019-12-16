@@ -38,10 +38,10 @@ One more consideration is this–it should be very difficult, if not impossible,
 ```mermaid
 graph LR
 A{{User}} --Query-->B(Authentication)
-B --Little work for true user--> C[Correct authentication]
+B --No work for true user--> C[Authenticates]
 B --> D[Failure]
-D --> E(Attacker gets incorrect data)
-D --As much work as Googling--> C
+D --> E(Incorrect data)
+D --Googles--> C
 ```
 
 That is, a user should only be able to move from a false authentication to a true authentication with enough work to make it unreasonable to actually do so. 

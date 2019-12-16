@@ -8,11 +8,11 @@
 
 ###### My birthday, innocently shared by my childhood church in their weekly publication
 
-![](/Users/liampulsifer/cyber_capstone/markdown/photos/birthday.png) 
+![](C:\Users\lwpul\Projects\cyber_capstone\markdown\photos\birthday.png) 
 
 ###### But wait, I already share all of that information on my public Instagram account, easily accessible to anyone who might want it!
 
-![](/Users/liampulsifer/cyber_capstone/markdown/photos/insta.png)
+![](C:\Users\lwpul\Projects\cyber_capstone\markdown\photos\insta.png)
 
 Hopefully, that will teach me to use my birthday as a password.
 
@@ -20,17 +20,17 @@ Hopefully, that will teach me to use my birthday as a password.
 
 ###### It's also easy to triangulate who my family members are from public obituaries 
 
-![](/Users/liampulsifer/cyber_capstone/markdown/photos/gail_obit_header.png)
+![](C:\Users\lwpul\Projects\cyber_capstone\markdown\photos\gail_obit_header.png)
 
-![](/Users/liampulsifer/cyber_capstone/markdown/photos/gail_obit.png)
+![](C:\Users\lwpul\Projects\cyber_capstone\markdown\photos\gail_obit.png)
 
-![](/Users/liampulsifer/cyber_capstone/markdown/photos/gary_obit.png)
+![](C:\Users\lwpul\Projects\cyber_capstone\markdown\photos\gary_obit.png)
 
 That's over half of my cousins represented. I was definitely surprised by exactly how easy it would be to come pretty close to mapping my entire family tree without my knowledge or permission (unlike through social media, where I ostensibly have some small level of control over who can look at my data). This also shows off exactly how silly it is to have a security question like "what was your mother's maiden name?" as a backup for any website login.
 
 ###### I also found out that my name is apparently the "perfect" first name for someone with the last name Pulsifer, though I'm not really sure what to make of that information.
 
-![](/Users/liampulsifer/cyber_capstone/markdown/photos/perfect_names.png)
+![](C:\Users\lwpul\Projects\cyber_capstone\markdown\photos\perfect_names.png)
 
 #### Why do we care?
 

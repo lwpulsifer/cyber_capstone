@@ -2,7 +2,7 @@
 
 ## 7. Implementation: Authentication
 
-Now that I have a semi-working web application that gets information from a very limited range of sources and then displays it, it's time to return to the authentication framework I wrote about in Post #5. In order to make things easier, I'm going to work on the Twitter side of things as a proof of concept, and then maybe I'll get to authenticating the voter data if I have time (I'll explain why the voter data is harder to apply this paradigm to later, even though it's more sensitive than Tweets and should probably be the first thing to be authenticated). 
+Now that I have a semi-working web application that gets information from a very limited range of sources and then displays it, it's time to return to the authentication framework I wrote about in Post #5. 
 
 #### Structure:
 
@@ -33,6 +33,12 @@ When the `correct_responses` counter reaches the threshold value, the user's tru
 
 Another necessary piece of all of this is deciding the relevant thresholds. I've settled on two correct answers and two incorrect answers being the starting thresholds (though I adjust them in the demo videos to show different aspects of the system clearly), but it's difficult to figure out what the best thresholds should be without empirical research: that is, to answer the question "what thresholds provide the best likelihood of excluding bad actors while also ensuring that almost anyone using the tool with good intentions can authenticate?" If I were to build this tool further, I would design a research schema to answer this question.
 
-Now, check out the system in action!
+#### 4. How to Leverage this Information
 
-VIDEO HERE 
+I outlined as part of my plan at the start of this blog that a part of my application, I would direct users to resources to minimize their digital footprint. That didn't happen. Such is life as a software engineer. That'll have to be cast onto the pile of potential future improvements. 
+
+#### All's Well That Ends Well
+
+The reality is that when you make a software project, there are always places to improve. It's a near unavoidable consequence of the field. That said, here's a video of the working authentication system!
+
+https://youtu.be/bo4nWy3h3rM
